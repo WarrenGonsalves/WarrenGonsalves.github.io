@@ -1,0 +1,123 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="ss-connect">
+
+  <template id="posts-list">
+
+    <style>
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      .card {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        padding: 16px;
+        margin: 24px;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #757575;
+      }
+      .circle {
+        display: inline-block;
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        background: #ddd;
+        line-height: 64px;
+        font-size: 30px;
+        color: #555;
+        text-align: center;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 16px 0;
+        color: #212121;
+      }
+
+      paper-drawer-panel {
+        --paper-drawer-panel-main-container: {
+          background-color: gray;
+        };
+        --paper-drawer-panel-scrim: {
+          background-color: red;
+        };
+
+      }
+      iframe {
+        width: 100%;
+        height: 90vh;
+      }
+    </style>
+
+    <paper-drawer-panel id="postDrawerPanel">
+      <paper-header-panel drawer>
+        <!-- <paper-toolbar></paper-toolbar> -->
+        <div>
+        <paper-menu id="postList">
+          <template is="dom-repeat"  id="employeeList" items="{{employees}}">
+            <paper-item listId="{{item.id}}"  on-click="toggleSelection">
+              <div><span>{{item.title}}</span></div>
+            </paper-item>
+            
+          </template>
+          
+        </paper-menu>
+          
+        </div>
+      </paper-header-panel>
+      <paper-header-panel main>
+        <!-- <paper-toolbar></paper-toolbar> -->
+        <div> 
+          <array-selector id="selector" items="{{employees}}" selected="{{selected}}" multi toggle></array-selector>
+
+          <!-- <div> Selected employees: </div> -->
+          <template is="dom-repeat" items="{{selected}}">
+              <!-- <div>Title: <span>{{item.title}}</span></div>
+              <div>URL: <span>{{item.url}}</span></div> -->
+              <iframe id="iframe" src="{{item.url}}"></iframe>
+          </template>
+        </div>
+      </paper-header-panel>
+    </paper-drawer-panel>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'ss-connect',
+      // listeners: {
+      //   'iron-select': 'toggleSelection'
+      // },
+      ready: function() {
+        this.employees = [
+            {title: '7th Pay Commission is here! Central govt employees to receive pay hike from next month', url: 'https://social.yourstory.com/2016/06/seventh-pay-commission/', id:'asf67asuf78'},
+            {title: 'Your Scientific Guide to Eating Like a Good Human in 2016', url: 'http://www.wired.com/2016/07/wired-how-to-eat-sustainably-responsibly/', id:'2378rfig89'}
+        ];
+        this.$.selector.select(this.employees[0]);        
+      },
+      toggleSelection: function(e) {
+        debugger;
+        var item = this.$.employeeList.itemForElement(e.target);
+        this.$.selector.deselect(this.$.selector.selected[0]);
+
+        this.$.selector.select(item);
+      }
+
+    });
+
+  </script>
+  <script src="../scripts/posts.js"></script>
+
+</dom-module>
